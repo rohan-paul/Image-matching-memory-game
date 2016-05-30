@@ -1,0 +1,85 @@
+body {
+  text-align: center;
+
+  background: BROWN url(../images/bg.jpg);
+}
+
+#game {
+  position: relative;
+
+  /*display: flex;*/
+
+  width: 860px;
+  height: 640px;
+  margin: 0 auto;
+  padding: 5px;
+
+  /*border: 1px solid #666;*/
+  border-radius: 10px;
+  /*background: #9c9;*/
+  /*background: #232 url(../images/table.jpg);*/
+  box-shadow: 0 -1px 0 #999, 0 1px 0 #999, inset 0 1px 6px #000;
+
+  justify-content: center;
+  align-items: center;
+}
+
+#cards {
+  position: relative;
+  width: 980px;
+  height: 400px;
+  align-items: center;
+}
+
+/* Define the 3D perspective view and dimension of each card. */
+.card {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  transition: all .3s;
+  perspective: 600px;
+}
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  transition: all .3s;
+  border-radius: 10px;
+
+  backface-visibility: hidden;
+}
+
+.front {
+  background: #999 url(../images/ImageSprite.png) -2520px;
+}
+.back {
+  transform: rotate3d(0,1,0,-180deg);
+
+  background: #efefef url(../images/ImageSprite.png);
+}
+
+.card-flipped .front {
+  transform: rotate3d(0,1,0,180deg);
+}
+.card-flipped .back {
+  transform: rotate3d(0,1,0,0deg);
+}
+
+.card-removed {
+  opacity: 0;
+}
+
+
+.image1 {background-position: -0px 0;}
+.image2 {background-position: -210px 0;}
+.image3 {background-position: -420px 0;}
+.image4 {background-position: -630px 0;}
+.image5 {background-position: -840px 0;}
+.image6 {background-position: -1050px 0;}
+.image11 {background-position: -1260px 0;}
+.image22 {background-position: -1470px 0;}
+.image33 {background-position: -1680px 0;}
+.image44 {background-position: -1890px 0;}
+.image55 {background-position: -2100px 0;}
+.image66 {background-position: -2310px 0;}
