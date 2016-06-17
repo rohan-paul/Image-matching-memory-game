@@ -1,29 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=en>
+
 <head>
-	<meta charset="UTF-8">
-	<title>Getting familiar with CSS3 Transition</title>
+	<meta charset=utf-8>
+	<title>CSS3 Matching Game</title>
+	<link href='https://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Orbitron:900' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/matchgame.css" />
+
 </head>
+
 <body>
 	<header>
-		<h1>Image Matching Memory Game</h1>
-		<h2>Click on each box, and the image will be revealed. For each image, there's a duplicate of the same. As you click on 2 same images both will vanish. Goal is to match all images in the lowest possible time.</h2>
+		<h1>CSS3 Matching Game</h1>
 	</header>
 
+	<div id="timer">
+		Elapsed time: <span id="elapsed-time">00:00</span>
+	</div>
 	<section id="game">
 		<div id="cards">
 			<div class="card">
 				<div class="face front"></div>
 				<div class="face back"></div>
 			</div>
+			<!-- .card -->
+		</div>
+		<!-- #cards -->
+	</section>
+	<!-- #game -->
+
+	<section id="popup" class="hide">
+		<div id="popup-bg">
+		</div>
+		<div id="popup-box">
+			<div class="ribbon hide">
+				<div class="ribbon-body">
+					<span>New Record</span>
+				</div>
+				<div class="triangle"></div>
+			</div>
+			<div id="popup-box-content">
+				<h1>You Won!</h1>
+				<p>Your Score:</p>
+				<p><span class='score'>13</span></p>
+				<p>
+					<small>Last Score: <span class='last-score'>0</span><br>
+            Saved on: <span class='saved-time'></span>
+          </small>
+				</p>
+			</div>
 		</div>
 	</section>
 
-
-	<script src="js/jquery-2.2.3.min.js"></script>
+	<script src="js/jquery-2.2.3.min.js"></script>>
 	<script src="js/prefixfree.min.js"></script>
 	<script src="js/matchgame.js"></script>
-
 </body>
+
 </html>
