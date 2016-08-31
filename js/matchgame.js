@@ -1,20 +1,20 @@
 (function($) {
 
-    var matchingGame = {};
+    var memoryGame = {};
 
     // game saving
-    matchingGame.savingObject = {};
+    memoryGame.savingObject = {};
 
-    matchingGame.savingObject.pack = [];
+    memoryGame.savingObject.pack = [];
 
     // an array to store which card is removed by storing their index.
-    matchingGame.savingObject.removedCards = [];
+    memoryGame.savingObject.removedCards = [];
 
     // store the counting elapsed time.
-    matchingGame.savingObject.currentElapsedTime = 0;
+    memoryGame.savingObject.currentElapsedTime = 0;
 
 
-    matchingGame.pack = [
+    memoryGame.pack = [
         'image1', 'image1',
         'image2', 'image2',
         'image3', 'image3',
@@ -53,17 +53,27 @@
         if (isMatchPattern()) {
             $(".card-flipped").removeClass("card-flipped").addClass("card-removed");
             $(".card-removed").bind("transitionend", removeTookCards);
+            playAudio("mp3/applause.mp3");
         } else {
             // If the pattern does not match, just flip back the already flipped cards.
             $(".card-flipped").removeClass('card-flipped');
+            playAudio("mp3/no.mp3");
         }
     }
+
+    function playAudio(sAudio) {
+    var audioElement = document.getElementById('audioEngine');
+    if(audioElement !== null) {
+        audioElement.src = sAudio;
+        audioElement.play();
+    }
+}
 
 
     function removeTookCards() {
         // add each removed card into the array which store which cards are removed
         $(".card-removed").each(function() {
-            matchingGame.savingObject.removedCards.push($(this).data("card-index"));
+            memoryGame.savingObject.removedCards.push($(this).data("card-index"));
             $(this).remove();
         });
 
@@ -77,13 +87,13 @@
     // Function to save the encoded savingObject into localStorage. This function effectively saves the game's progress
     function saveSavingObject() {
         // save the encoded saving object into local storage
-        localStorage["savingObject"] = JSON.stringify(matchingGame.savingObject);
+        localStorage["savingObject"] = JSON.stringify(memoryGame.savingObject);
     }
 
 
     function gameover() {
         // stop the timer
-        clearInterval(matchingGame.timer);
+        clearInterval(memoryGame.timer);
 
         // display the elapsed time in the game over popup
         $(".score").html($("#elapsed-time"));
@@ -127,7 +137,7 @@
         //construct the object of datetime and game score
         var obj = {
             "savedTime": now,
-            "score": matchingGame.elapsedTime
+            "score": memoryGame.elapsedTime
         };
 
         // save the score into local storage
@@ -137,7 +147,7 @@
         $("#popup").removeClass("hide");
 
         // Ribbon
-        if (lastElapsedTime === 0 || matchingGame.elapsedTime < lastElapsedTime) {
+        if (lastElapsedTime === 0 || memoryGame.elapsedTime < lastElapsedTime) {
             $(".ribbon").removeClass("hide");
         }
 
@@ -147,15 +157,15 @@
 
     // Count the elapsed time
     function countTimer() {
-        matchingGame.elapsedTime++;
+        memoryGame.elapsedTime++;
 
         // save the current elapsed time into savingObject.
-        matchingGame.savingObject.currentElapsedTime =
-            matchingGame.elapsedTime;
+        memoryGame.savingObject.currentElapsedTime =
+            memoryGame.elapsedTime;
 
         // calculate the minutes and seconds from elapsed time
-        var minute = Math.floor(matchingGame.elapsedTime / 60);
-        var second = matchingGame.elapsedTime % 60;
+        var minute = Math.floor(memoryGame.elapsedTime / 60);
+        var second = memoryGame.elapsedTime % 60;
 
         // add padding 0 if minute and second is less then 10
         if (minute < 10) minute = "0" + minute;
@@ -182,32 +192,32 @@
     $(document).ready(function() {
 
         // reset the elapsed time to 0.
-        matchingGame.elapsedTime = 0;
+        memoryGame.elapsedTime = 0;
 
         // start the timer
-        matchingGame.timer = setInterval(countTimer, 1000);
+        memoryGame.timer = setInterval(countTimer, 1000);
 
         // shuffle the pack.
-        matchingGame.pack.sort(shuffle);
+        memoryGame.pack.sort(shuffle);
 
         // re-create the saved pack
         var savedObject = savedSavingObject();
         if (savedObject !== undefined) {
-            matchingGame.pack = savedObject.pack;
+            memoryGame.pack = savedObject.pack;
         }
 
         // reset the elapsed time to 0.
-        matchingGame.elapsedTime = 0;
+        memoryGame.elapsedTime = 0;
 
         // restore the saved elapsed time
         if (savedObject !== undefined) {
-            matchingGame.elapsedTime = savedObject.currentElapsedTime;
-            matchingGame.savingObject.currentElapsedTime = savedObject.
+            memoryGame.elapsedTime = savedObject.currentElapsedTime;
+            memoryGame.savingObject.currentElapsedTime = savedObject.
             currentElapsedTime;
         }
 
         // copying the pack into saving object.
-        matchingGame.savingObject.pack = matchingGame.pack.slice();
+        memoryGame.savingObject.pack = memoryGame.pack.slice();
 
 
         for (var i = 0; i < 11; i++) {
@@ -220,7 +230,7 @@
             $(this).css("transform", "translateX(" + x + "px) translateY(" + y + "px)");
 
             // get a pattern from the shuffled pack
-            var pattern = matchingGame.pack.pop();
+            var pattern = memoryGame.pack.pop();
 
             // visually apply the pattern on the card's back side.
             $(this).find(".back").addClass(pattern);
@@ -237,11 +247,11 @@
 
         // removed cards that were removed in savedObject.
         if (savedObject !== undefined) {
-            matchingGame.savingObject.removedCards =
+            memoryGame.savingObject.removedCards =
                 savedObject.removedCards;
             // find those cards and remove them.
-            for (var i in matchingGame.savingObject.removedCards) {
-                $(".card[data-card-index=" + matchingGame.savingObject.removedCards[i] + "]").remove();
+            for (var i in memoryGame.savingObject.removedCards) {
+                $(".card[data-card-index=" + memoryGame.savingObject.removedCards[i] + "]").remove();
             }
         }
     });
